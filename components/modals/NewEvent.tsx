@@ -53,9 +53,27 @@ export default function NewEventModal({
   const [form, setForm] = useState(EMPTY_FORM)
   const [error, setError] = useState<string | null>(null)
 
+  //that is some wizard shit tbh
+  //basically
+  {/*
+    typeof EMPTY_FORM grabs the type of the variable
+    wich in this case would be something like
+    {
+        name: string,
+        amount: string,
+        kind: EventKind,
+        recurrence: Recurrence,
+    ...}
+    
+    then keyof grabs the keys from thistype to get
+    name|amount|kind and so on
+    and then K extends that thingamajig creating an equivalent of
+    type K = name|amount|kind and so on */}
+
+  //in short dynamic type for update (duh)
   const update = <K extends keyof typeof EMPTY_FORM>(
     key: K,
-    value: (typeof EMPTY_FORM)[K]
+    value: (typeof EMPTY_FORM)[K] //additionally smart, k isreused to check propper type of the inputed data
   ) => setForm((prev) => ({ ...prev, [key]: value }))
 
   const reset = () => {
