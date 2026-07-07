@@ -22,13 +22,13 @@ import NewEventModal from "@/components/modals/NewEvent"
 export default function Page() {
   const [appState, setAppState] = useState<AppState>({
     events: [],
-    settings: {} as AppState["settings"], // replace with your real default settings
+    settings: {} as AppState["settings"], // replace with actuall default settings once i implement those
   })
 
   const [tab, setTab] = useState("dashboard")
   const [modalOpen, setModalOpen] = useState(false)
 
-  const showButton = ["dashboard", "callendar", "events"].includes(tab)
+  const showButton = ["dashboard", "callendar", "events"].includes(tab) //cool way to write a "true if val in arr" type func
 
   const handleCreateEvent = (event: BudgetEvent) => {
     setAppState((prev) => ({
