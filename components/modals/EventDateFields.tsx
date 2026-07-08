@@ -126,6 +126,7 @@ export default function EventDateFields({
               type="date"
               value={form.startDate}
               onChange={(e) => update("startDate", e.target.value)}
+              className="[&::-webkit-calendar-picker-indicator]:opacity-60 dark:[&::-webkit-calendar-picker-indicator]:invert"
             />
           </div>
           <div className="space-y-1.5">
@@ -135,6 +136,7 @@ export default function EventDateFields({
               type="date"
               value={form.endDate}
               onChange={(e) => update("endDate", e.target.value)}
+              className="[&::-webkit-calendar-picker-indicator]:opacity-60 dark:[&::-webkit-calendar-picker-indicator]:invert"
             />
           </div>
         </div>
@@ -149,6 +151,7 @@ export default function EventDateFields({
               type="date"
               value={form.startDate}
               onChange={(e) => update("startDate", e.target.value)}
+              className="[&::-webkit-calendar-picker-indicator]:opacity-60 dark:[&::-webkit-calendar-picker-indicator]:invert"
             />
           </div>
           <div className="space-y-1.5">
@@ -158,6 +161,7 @@ export default function EventDateFields({
               type="date"
               value={form.endDate}
               onChange={(e) => update("endDate", e.target.value)}
+              className="[&::-webkit-calendar-picker-indicator]:opacity-60 dark:[&::-webkit-calendar-picker-indicator]:invert"
             />
           </div>
         </div>
