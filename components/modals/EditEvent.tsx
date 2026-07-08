@@ -23,8 +23,9 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-import { BudgetEvent, EventKind, Recurrence } from "@/app/types"
-import { EMPTY_FORM } from "./EventForm"
+import { BudgetEvent, EventKind } from "@/app/types"
+import { createEmptyForm } from "./EventForm"
+import EventDateFields from "@/components/modals/EventDateFields"
 
 interface EditEventModalProps {
   open: boolean
@@ -54,7 +55,7 @@ export default function EditEventModal({
   event,
   onUpdate,
 }: EditEventModalProps) {
-  const [form, setForm] = useState(EMPTY_FORM)
+  const [form, setForm] = useState(createEmptyForm)
   const [error, setError] = useState<string | null>(null)
 
   // reload form contents every time the modal opens for a (possibly new) event -
@@ -65,11 +66,11 @@ export default function EditEventModal({
       setError(null)
     }
   }, [open, event])
-  
+
   //wizard shit once more
-  const update = <K extends keyof typeof EMPTY_FORM>(
+  const update = <K extends keyof ReturnType<typeof createEmptyForm>>(
     key: K,
-    value: (typeof EMPTY_FORM)[K]
+    value: ReturnType<typeof createEmptyForm>[K]
   ) => setForm((prev) => ({ ...prev, [key]: value }))
 
   const handleOpenChange = (next: boolean) => {
@@ -202,114 +203,7 @@ export default function EditEventModal({
             </div>
           </div>
 
-          <div className="grid w-full grid-cols-2 gap-3">
-            {/* Recurrence */}
-            <div className="space-y-1.5">
-              <Label>Recurrence</Label>
-
-              <Select
-                value={form.recurrence}
-                onValueChange={(v) => update("recurrence", v as Recurrence)}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue />
-                </SelectTrigger>
-
-                <SelectContent>
-                  <SelectItem value="once">One-off</SelectItem>
-                  <SelectItem value="monthly">Monthly</SelectItem>
-                  <SelectItem value="interval">Every N days</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            {form.recurrence === "monthly" && (
-              <div className="space-y-1.5">
-                <Label htmlFor="edit-dayOfMonth">Day of month</Label>
-                <Input
-                  id="edit-dayOfMonth"
-                  type="number"
-                  min="1"
-                  max="31"
-                  placeholder="e.g. 1"
-                  value={form.dayOfMonth}
-                  onChange={(e) => update("dayOfMonth", e.target.value)}
-                />
-              </div>
-            )}
-            {form.recurrence === "interval" && (
-              <div className="space-y-1.5">
-                <Label htmlFor="edit-intervalDays">Repeat every (days)</Label>
-                <Input
-                  id="edit-intervalDays"
-                  type="number"
-                  min="1"
-                  placeholder="e.g. 14"
-                  value={form.intervalDays}
-                  onChange={(e) => update("intervalDays", e.target.value)}
-                />
-              </div>
-            )}
-          </div>
-
-          {/* Conditional fields based on recurrence */}
-          {form.recurrence === "once" && (
-            <div className="space-y-1.5">
-              <Label htmlFor="edit-date">Date</Label>
-              <Input
-                id="edit-date"
-                type="date"
-                value={form.date}
-                onChange={(e) => update("date", e.target.value)}
-                className="[&::-webkit-calendar-picker-indicator]:opacity-60 dark:[&::-webkit-calendar-picker-indicator]:invert"
-              />
-            </div>
-          )}
-
-          {form.recurrence === "monthly" && (
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1.5">
-                <Label htmlFor="edit-startDate">Start date (optional)</Label>
-                <Input
-                  id="edit-startDate"
-                  type="date"
-                  value={form.startDate}
-                  onChange={(e) => update("startDate", e.target.value)}
-                />
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="edit-endDate">End date (optional)</Label>
-                <Input
-                  id="edit-endDate"
-                  type="date"
-                  value={form.endDate}
-                  onChange={(e) => update("endDate", e.target.value)}
-                />
-              </div>
-            </div>
-          )}
-
-          {form.recurrence === "interval" && (
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1.5">
-                <Label htmlFor="edit-startDateInterval">Start date</Label>
-                <Input
-                  id="edit-startDateInterval"
-                  type="date"
-                  value={form.startDate}
-                  onChange={(e) => update("startDate", e.target.value)}
-                />
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="edit-endDateInterval">End date (optional)</Label>
-                <Input
-                  id="edit-endDateInterval"
-                  type="date"
-                  value={form.endDate}
-                  onChange={(e) => update("endDate", e.target.value)}
-                />
-              </div>
-            </div>
-          )}
+          <EventDateFields form={form} setForm={setForm} idPrefix="edit-" />
 
           {/* Notes */}
           <div className="space-y-1.5">

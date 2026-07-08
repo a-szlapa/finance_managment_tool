@@ -1,15 +1,30 @@
-import { EventKind, Recurrence } from "@/app/types";
+import { BudgetEvent, EventKind, Recurrence } from "@/app/types"
+import { todayISO } from "@/app/types"
 
-export const EMPTY_FORM = {
+export interface EventFormState {
+  name: string
+  amount: string
+  kind: EventKind
+  recurrence: Recurrence
+  date: string
+  dayOfMonth: string
+  intervalDays: string
+  startDate: string
+  endDate: string
+  notes: string
+  hypothetical: boolean
+}
+
+export const createEmptyForm = (): EventFormState => ({
   name: "",
   amount: "",
-  kind: "expense" as EventKind,
-  recurrence: "once" as Recurrence,
-  date: "",
+  kind: "expense",
+  recurrence: "once",
+  date: todayISO(),
   dayOfMonth: "",
   intervalDays: "",
   startDate: "",
   endDate: "",
   notes: "",
   hypothetical: false,
-}
+})
