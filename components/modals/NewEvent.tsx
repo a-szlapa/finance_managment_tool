@@ -24,25 +24,12 @@ import {
 } from "@/components/ui/select"
 
 import { BudgetEvent, EventKind, Recurrence } from "@/app/types"
+import { EMPTY_FORM } from "./EventForm"
 
 interface NewEventModalProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   onCreate: (event: BudgetEvent) => void
-}
-
-const EMPTY_FORM = {
-  name: "",
-  amount: "",
-  kind: "expense" as EventKind,
-  recurrence: "once" as Recurrence,
-  date: "",
-  dayOfMonth: "",
-  intervalDays: "",
-  startDate: "",
-  endDate: "",
-  notes: "",
-  hypothetical: false,
 }
 
 export default function NewEventModal({
