@@ -221,7 +221,50 @@ export default function Settings({
 
       <div className="border-t" />
 
-      
+      {/* What-if events */}
+      <section className="space-y-3">
+        <div>
+          <h2 className="text-sm font-medium">What-if events</h2>
+          <p className="text-muted-foreground text-sm">
+            {hypotheticalCount === 0
+              ? "No what-if events right now."
+              : `${hypotheticalCount} event${hypotheticalCount === 1 ? "" : "s"} currently marked as what-if.`}
+          </p>
+        </div>
+
+        <Button
+          variant="outline"
+          className="gap-1.5"
+          disabled={hypotheticalCount === 0}
+          onClick={() => setApplyOpen(true)}
+        >
+          <Sparkles className="size-4" />
+          Apply all what-if events
+        </Button>
+
+        <AlertDialog open={applyOpen} onOpenChange={setApplyOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                Apply {hypotheticalCount} what-if event
+                {hypotheticalCount === 1 ? "" : "s"}?
+              </AlertDialogTitle>
+              <AlertDialogDescription>
+                These events will become permanent and no longer marked as
+                what-if. This can't be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={confirmApply}>
+                Apply
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </section>
+
+      <div className="border-t" />
 
       {/* Data */}
       <section className="space-y-3">
