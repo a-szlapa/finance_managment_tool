@@ -222,6 +222,70 @@ export default function Settings({
       <div className="border-t" />
 
       
+
+      {/* Data */}
+      <section className="space-y-3">
+        <div>
+          <h2 className="text-sm font-medium">Data</h2>
+          <p className="text-muted-foreground text-sm">
+            Back up your events and settings, or restore from a file.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-3">
+          <Button
+            variant="outline"
+            className="gap-1.5"
+            onClick={() => exportAppState({ events, settings })}
+          >
+            <Download className="size-4" />
+            Export data
+          </Button>
+
+          <Button
+            variant="outline"
+            className="gap-1.5"
+            onClick={() => fileInputRef.current?.click()}
+          >
+            <Upload className="size-4" />
+            Import data
+          </Button>
+
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="application/json"
+            className="hidden"
+            onChange={handleFileChange}
+          />
+        </div>
+
+        {importError && <p className="text-sm text-red-600">{importError}</p>}
+
+        <AlertDialog
+          open={pendingImport !== null}
+          onOpenChange={(open) => !open && setPendingImport(null)}
+        >
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Replace current data?</AlertDialogTitle>
+              <AlertDialogDescription>
+                {pendingImport &&
+                  `This file has ${pendingImport.events.length} event${pendingImport.events.length === 1 ? "" : "s"}. Importing will replace all events and settings currently stored in this browser. This can't be undone.`}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                className="bg-red-600 hover:bg-red-600/90"
+                onClick={confirmImport}
+              >
+                Replace data
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </section>
     </div>
   )
 }
