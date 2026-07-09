@@ -72,6 +72,23 @@ export default function Page() {
     }))
   }
 
+  const handleUpdateSettings = (settings: AppState["settings"]) => {
+    setAppState((prev) => ({ ...prev, settings }))
+  }
+
+  const handleApplyAllHypothetical = () => {
+    setAppState((prev) => ({
+      ...prev,
+      events: prev.events.map((e) =>
+        e.hypothetical ? { ...e, hypothetical: undefined } : e
+      ),
+    }))
+  }
+
+  const handleImportState = (state: AppState) => {
+    setAppState(state)
+  }
+
   return (
     <div className="mx-auto flex min-h-svh w-3/4">
       <Tabs value={tab} onValueChange={setTab} className="w-full">
@@ -117,7 +134,15 @@ export default function Page() {
           </TabsContent>
 
           <TabsContent value="settings">
-            <Settings />
+            <TabsContent value="settings">
+            <Settings
+              settings={appState.settings}
+              events={appState.events}
+              onUpdateSettings={handleUpdateSettings}
+              onApplyAllHypothetical={handleApplyAllHypothetical}
+              onImport={handleImportState}
+            />
+          </TabsContent>
           </TabsContent>
         </div>
       </Tabs>
