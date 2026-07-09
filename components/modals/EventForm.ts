@@ -1,5 +1,6 @@
 import { BudgetEvent, EventKind, Recurrence } from "@/app/types"
-import { todayISO } from "@/app/types"
+import { todayISO } from "@/lib/date"
+
 
 export interface EventFormState {
   name: string

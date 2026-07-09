@@ -12,8 +12,9 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-import { Recurrence, todayISO } from "@/app/types"
+import { Recurrence } from "@/app/types"
 import { EventFormState } from "@/components/modals/EventForm"
+import { todayISO } from "@/lib/date"
 
 interface EventDateFieldsProps {
   form: EventFormState
