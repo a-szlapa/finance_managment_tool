@@ -6,6 +6,7 @@ import Events from "@/components/pages/Events"
 import Settings from "@/components/pages/Settings"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
+import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import React, { useState } from "react"
 
@@ -15,8 +16,9 @@ export default function page() {
       <div className="w-full flex flex-row justify-center py-10">
         <div className="w-1/8">{/* side panel L */}</div>
         <main className="max-w-3/4 w-3/4">
-          <Tabs className="w-full">
+          <Tabs className="w-full flex-1 gap-5">
             <NavBar />
+            <Separator  className="mb-1"/>
             <TabsContent value="Dashboard"><Dashboard></Dashboard></TabsContent>
             <TabsContent value="Callendar"><Callendar></Callendar></TabsContent>
             <TabsContent value="Events"><Events></Events></TabsContent>

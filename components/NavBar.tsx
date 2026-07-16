@@ -7,7 +7,7 @@ type NavBarProps = {}
 
 export default function NavBar({}: NavBarProps) {
   return (
-    <div className="flex flex-row align items-center justify-between border-border border-b-1 py-2">
+    <div className="flex flex-row align items-center justify-between">
       <TabsList>
         <TabsTrigger value="Dashboard">Dashboard</TabsTrigger>
         <TabsTrigger value="Callendar">Callendar</TabsTrigger>
@@ -15,7 +15,7 @@ export default function NavBar({}: NavBarProps) {
         <TabsTrigger value="Settings">Settings</TabsTrigger>
       </TabsList>
 
-      <Button className="m-1">
+      <Button className="">
         <Plus data-icon="inline-start" />
         New event
       </Button>
