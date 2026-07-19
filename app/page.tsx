@@ -1,4 +1,5 @@
 "use client"
+import BalanceChart from "@/components/BalanceChart"
 import NavBar from "@/components/NavBar"
 import Callendar from "@/components/pages/Callendar"
 import Dashboard from "@/components/pages/Dashboard"
@@ -19,10 +20,10 @@ export default function page() {
           <Tabs className="w-full flex-1 gap-5">
             <NavBar />
             <Separator  className="mb-1"/>
-            <TabsContent value="Dashboard"><Dashboard></Dashboard></TabsContent>
-            <TabsContent value="Callendar"><Callendar></Callendar></TabsContent>
-            <TabsContent value="Events"><Events></Events></TabsContent>
-            <TabsContent value="Settings"><Settings></Settings></TabsContent>
+            <TabsContent value="Dashboard"><Dashboard /></TabsContent>
+            <TabsContent value="Callendar"><Callendar /></TabsContent>
+            <TabsContent value="Events"><Events /></TabsContent>
+            <TabsContent value="Settings"><Settings /></TabsContent>
           </Tabs>
         </main>
         <div className="w-1/8">{/* side panel L */}</div>

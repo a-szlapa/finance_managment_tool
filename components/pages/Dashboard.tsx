@@ -1,9 +1,15 @@
 import React from 'react'
+import BalanceChart from '../BalanceChart'
 
-function Dashboard() {
-  return (
-    <div>Dashboard</div>
-  )
+type DashboardProps = {
+  
 }
 
-export default Dashboard
+export default function Dashboard({  }: DashboardProps) {
+  return (
+    <div>
+      test
+      <BalanceChart />
+    </div>
+  )
+}
