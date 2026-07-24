@@ -9,9 +9,17 @@ import {
 import genChartData from "@/lib/helperFunctions/mockChartData"
 import { type chartData } from "@/lib/types/chatData"
 
-type BalanceChartProps = {chartData: chartData}
+type BalanceChartProps = {
+  chartData: chartData
+  fundsStart: number
+  fundsEnd: number
+}
 
-export default function BalanceChart({chartData}: BalanceChartProps) {
+export default function BalanceChart({
+  chartData,
+  fundsStart,
+  fundsEnd,
+}: BalanceChartProps) {
   const chartConfig = {
     desktop: {
       label: "Balance",
@@ -27,10 +35,10 @@ export default function BalanceChart({chartData}: BalanceChartProps) {
           margin={{
             top: 32,
             bottom: 16,
-            right: 12
+            right: 12,
           }}
         >
-          <CartesianGrid  />
+          <CartesianGrid />
           <XAxis
             dataKey="date"
             tickLine={true}
@@ -40,7 +48,13 @@ export default function BalanceChart({chartData}: BalanceChartProps) {
               return value.toLocaleDateString("en-GB")
             }}
           />
-          <YAxis dataKey="balance" tickLine={true} axisLine={false} tickMargin={8}/>
+          <YAxis
+            domain={[fundsStart, fundsEnd]}
+            dataKey="balance"
+            tickLine={true}
+            axisLine={false}
+            tickMargin={8}
+          />
           <ChartTooltip
             cursor={false}
 
@@ -62,7 +76,6 @@ export default function BalanceChart({chartData}: BalanceChartProps) {
             isAnimationActive={false}
           />
         </LineChart>
-        
       </ChartContainer>
     </div>
   )
