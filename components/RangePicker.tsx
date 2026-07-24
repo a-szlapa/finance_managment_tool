@@ -1,6 +1,7 @@
 "use client"
 import { clamp } from "@/lib/utils"
 import { GripHorizontal, GripVertical } from "lucide-react"
+import { stringify } from "querystring"
 import React, { useEffect, useRef, useState } from "react"
 
 type Orientation = "horizontal" | "vertical"
@@ -14,6 +15,7 @@ type RangePickerProps = {
   startSetter: React.Dispatch<React.SetStateAction<number>>
   endSetter: React.Dispatch<React.SetStateAction<number>>
   orientation?: Orientation
+  formater?: (value:any) => string
 }
 
 export default function RangePicker({
@@ -24,6 +26,7 @@ export default function RangePicker({
   startSetter,
   endSetter,
   orientation = "horizontal",
+  formater= (element: any) => {return element.toString()}
 }: RangePickerProps) {
   const setStartTick = (val: number) => {
     startSetter(val)
@@ -163,6 +166,19 @@ export default function RangePicker({
               <GripVertical className="size-4 text-muted-foreground" />
             </div>
           </div>
+          <div
+            className="absolute top-full mt-1 -translate-x-1/2 text-xs whitespace-nowrap text-muted-foreground"
+            style={{ left: `${rangeDisplayStart}%` }}
+          >
+            {formater(tickList[startVal])}
+          </div>
+
+          <div
+            className="absolute top-full mt-1 -translate-x-1/2 text-xs whitespace-nowrap text-muted-foreground"
+            style={{ left: `${rangeDisplayEnd}%` }}
+          >
+            {formater(tickList[endVal])}
+          </div>
         </div>
       )}
 
@@ -200,6 +216,19 @@ export default function RangePicker({
             <div className="flex h-5 w-9 items-center justify-center rounded-b-md border-2 border-primary bg-background shadow">
               <GripHorizontal className="size-4 text-muted-foreground" />
             </div>
+          </div>
+
+          <div
+            className="absolute right-full mr-1 -translate-y-1/2 text-xs whitespace-nowrap text-muted-foreground"
+            style={{ top: `${rangeDisplayStart}%` }}
+          >
+            {formater(tickList[startVal])}
+          </div>
+          <div
+            className="absolute right-full mr-1 -translate-y-1/2 text-xs whitespace-nowrap text-muted-foreground"
+            style={{ top: `${rangeDisplayEnd}%` }}
+          >
+            {formater(tickList[endVal])}
           </div>
         </div>
       )}
