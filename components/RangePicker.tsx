@@ -1,5 +1,6 @@
 "use client"
 import { clamp } from "@/lib/utils"
+import { GripHorizontal, GripVertical } from "lucide-react"
 import React, { useEffect, useRef, useState } from "react"
 
 type Orientation = "horizontal" | "vertical"
@@ -12,6 +13,7 @@ type RangePickerProps = {
   endVal: number
   startSetter: React.Dispatch<React.SetStateAction<number>>
   endSetter: React.Dispatch<React.SetStateAction<number>>
+  orientation?: Orientation
 }
 
 export default function RangePicker({
@@ -21,8 +23,8 @@ export default function RangePicker({
   endVal,
   startSetter,
   endSetter,
+  orientation = "horizontal",
 }: RangePickerProps) {
-
   const setStartTick = (val: number) => {
     startSetter(val)
   }
@@ -32,19 +34,22 @@ export default function RangePicker({
   }
 
   const trackRef = useRef<HTMLDivElement>(null)
-  const [rangeDisplayStart, setRangeDisplayStart] = useState(0)
-  const [rangeDisplayEnd, setrangeDisplayEnd] = useState(100)
 
   const [dragMode, setDragMode] = useState<DragMode>(null)
 
   const dragOriginRef = useRef({ clientX: 0, startVal: 0, endVal: 0 })
 
+  const rangeDisplayStart = (startVal / (tickList.length - 1)) * 100
+  const rangeDisplayEnd = (endVal / (tickList.length - 1)) * 100
+
   function beginDrag(mode: DragMode) {
     return (event: React.PointerEvent) => {
       event.preventDefault()
+      const pointerPos =
+        orientation == "vertical" ? event.clientY : event.clientX
       if (mode == "move") {
         dragOriginRef.current = {
-          clientX: event.clientX,
+          clientX: pointerPos,
           startVal,
           endVal,
         }
@@ -57,16 +62,17 @@ export default function RangePicker({
     const track = trackRef.current?.getBoundingClientRect()
     if (!track) return
 
-    const tickSize = track.width / (tickList.length - 1)
+    const track_space = orientation == "vertical" ? track.height : track.width
 
-    const handlePosition = (clientX - track.left) / tickSize
+    const tickSize = track_space / (tickList.length - 1)
+
+    const handlePosition =
+      (clientX - (orientation == "vertical" ? track.top : track.left)) /
+      tickSize
 
     if (dragMode == "start") {
       let tickIndex = clamp(Math.round(handlePosition), 0, endVal - minTickGap)
       setStartTick(tickIndex)
-
-      const newStartPos = ((tickIndex * tickSize) / track.width) * 100
-      setRangeDisplayStart(newStartPos)
     }
 
     if (dragMode == "end") {
@@ -76,9 +82,6 @@ export default function RangePicker({
         tickList.length - 1
       )
       setEndTick(tickIndex)
-
-      const newEndPos = ((tickIndex * tickSize) / track.width) * 100
-      setrangeDisplayEnd(newEndPos)
     }
 
     if (dragMode == "move") {
@@ -96,11 +99,6 @@ export default function RangePicker({
 
       setStartTick(tickStartIndex)
       setEndTick(tickEndIndex)
-
-      const newStartPos = ((tickStartIndex * tickSize) / track.width) * 100
-      const newEndPos = ((tickEndIndex * tickSize) / track.width) * 100
-      setRangeDisplayStart(newStartPos)
-      setrangeDisplayEnd(newEndPos)
     }
   }
 
@@ -108,7 +106,11 @@ export default function RangePicker({
     if (!dragMode) return
 
     const handleDrag = (event: PointerEvent) => {
-      updateRange(event.clientX)
+      if (orientation == "horizontal") {
+        updateRange(event.clientX)
+      } else {
+        updateRange(event.clientY)
+      }
     }
 
     const handleUp = () => {
@@ -122,33 +124,85 @@ export default function RangePicker({
       window.removeEventListener("pointermove", handleDrag)
       window.removeEventListener("pointerup", handleUp)
     }
-  }, [dragMode, rangeDisplayStart, rangeDisplayEnd])
+  }, [dragMode, rangeDisplayStart, rangeDisplayEnd, endVal, startVal])
 
   return (
-    <div
-      ref={trackRef}
-      className="relative h-3 w-full rounded-full bg-muted select-none"
-    >
-      <div
-        className="absolute top-0 bottom-0 cursor-grab touch-none rounded-full bg-primary active:cursor-grabbing"
-        style={{
-          left: `${rangeDisplayStart}%`,
-          width: `${rangeDisplayEnd - rangeDisplayStart}%`,
-        }}
-        onPointerDown={beginDrag("move")}
-      />
+    <>
+      {orientation === "horizontal" && (
+        <div
+          ref={trackRef}
+          className="relative h-9 w-full rounded-md bg-muted select-none"
+        >
+          <div
+            className="absolute top-0 bottom-0 cursor-grab touch-none bg-primary active:cursor-grabbing"
+            style={{
+              left: `${rangeDisplayStart}%`,
+              width: `${rangeDisplayEnd - rangeDisplayStart}%`,
+            }}
+            onPointerDown={beginDrag("move")}
+          />
 
-      <div
-        className="absolute top-1/2 size-5 -translate-x-1/2 -translate-y-1/2 cursor-grab touch-none rounded-full border-2 border-primary bg-background shadow active:cursor-grabbing"
-        style={{ left: `${rangeDisplayStart}%` }}
-        onPointerDown={beginDrag("start")}
-      />
+          {/* Start handle hitbox */}
+          <div
+            className="absolute top-1/2 z-10 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 cursor-grab touch-none items-center justify-center active:cursor-grabbing"
+            style={{ left: `${rangeDisplayStart}%` }}
+            onPointerDown={beginDrag("start")}
+          >
+            <div className="flex h-9 w-5 items-center justify-center rounded-l-md border-2 border-primary bg-background shadow">
+              <GripVertical className="size-4 text-muted-foreground" />
+            </div>
+          </div>
 
-      <div
-        className="absolute top-1/2 size-5 -translate-x-1/2 -translate-y-1/2 cursor-grab touch-none rounded-full border-2 border-primary bg-background shadow active:cursor-grabbing"
-        style={{ left: `${rangeDisplayEnd}%` }}
-        onPointerDown={beginDrag("end")}
-      />
-    </div>
+          {/* End handle hitbox */}
+          <div
+            className="absolute top-1/2 z-10 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 cursor-grab touch-none items-center justify-center active:cursor-grabbing"
+            style={{ left: `${rangeDisplayEnd}%` }}
+            onPointerDown={beginDrag("end")}
+          >
+            <div className="flex h-9 w-5 items-center justify-center rounded-r-md border-2 border-primary bg-background shadow">
+              <GripVertical className="size-4 text-muted-foreground" />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {orientation === "vertical" && (
+        <div
+          ref={trackRef}
+          className="relative h-full w-9 rounded-md bg-muted select-none"
+        >
+          <div
+            className="absolute right-0 left-0 cursor-grab touch-none bg-primary active:cursor-grabbing"
+            style={{
+              top: `${rangeDisplayStart}%`,
+              height: `${rangeDisplayEnd - rangeDisplayStart}%`,
+            }}
+            onPointerDown={beginDrag("move")}
+          />
+
+          {/* Start handle hitbox */}
+          <div
+            className="absolute left-1/2 z-10 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 cursor-grab touch-none items-center justify-center active:cursor-grabbing"
+            style={{ top: `${rangeDisplayStart}%` }}
+            onPointerDown={beginDrag("start")}
+          >
+            <div className="flex h-5 w-9 items-center justify-center rounded-t-md border-2 border-primary bg-background shadow">
+              <GripHorizontal className="size-4 text-muted-foreground" />
+            </div>
+          </div>
+
+          {/* End handle hitbox */}
+          <div
+            className="absolute left-1/2 z-10 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 cursor-grab touch-none items-center justify-center active:cursor-grabbing"
+            style={{ top: `${rangeDisplayEnd}%` }}
+            onPointerDown={beginDrag("end")}
+          >
+            <div className="flex h-5 w-9 items-center justify-center rounded-b-md border-2 border-primary bg-background shadow">
+              <GripHorizontal className="size-4 text-muted-foreground" />
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   )
 }
