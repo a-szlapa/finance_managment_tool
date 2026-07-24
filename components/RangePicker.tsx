@@ -137,7 +137,7 @@ export default function RangePicker({
           className="relative h-9 w-full rounded-md bg-muted select-none"
         >
           <div
-            className="absolute top-0 bottom-0 cursor-grab touch-none bg-primary active:cursor-grabbing"
+            className="absolute top-0 bottom-0 cursor-grab touch-none bg-primary/40 active:cursor-grabbing"
             style={{
               left: `${rangeDisplayStart}%`,
               width: `${rangeDisplayEnd - rangeDisplayStart}%`,
@@ -188,7 +188,7 @@ export default function RangePicker({
           className="relative h-full w-9 rounded-md bg-muted select-none"
         >
           <div
-            className="absolute right-0 left-0 cursor-grab touch-none bg-primary active:cursor-grabbing"
+            className="absolute right-0 left-0 cursor-grab touch-none bg-primary/40 active:cursor-grabbing"
             style={{
               top: `${rangeDisplayStart}%`,
               height: `${rangeDisplayEnd - rangeDisplayStart}%`,
