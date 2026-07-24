@@ -1,20 +1,19 @@
-import { chartData, chartDataPoint } from "../types/chatData"
-
-function genChartDataPoint(date: Date): chartDataPoint {
-  let temp = Number((Math.random() * (1000 - 800) + 800).toFixed(2))
-
-  return {
-    date: date,
-    balance: temp,
-    savings: 600,
-    whatIf: temp,
-  }
-}
+import { chartData } from "../types/chatData";
 
 export default function genChartData(length: number): chartData {
-  const startDate = new Date()
+  const today = new Date();
 
-  return Array.from({ length }, (_, i) =>
-    genChartDataPoint(new Date(startDate.setDate(startDate.getDate() + i)))
-  )
+  return Array.from({ length }, (_, index) => {
+    const date = new Date(today);
+    date.setDate(today.getDate() + index);
+
+    const balance = Number((Math.random() * 200 + 800).toFixed(2));
+
+    return {
+      date,
+      balance,
+      savings: 600,
+      whatIf: balance,
+    };
+  });
 }
