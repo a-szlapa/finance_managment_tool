@@ -7,11 +7,11 @@ import {
   ChartTooltipContent,
 } from "./ui/chart"
 import genChartData from "@/lib/helperFunctions/mockChartData"
+import { type chartData } from "@/lib/types/chatData"
 
-type BalanceChartProps = {}
+type BalanceChartProps = {chartData: chartData}
 
-export default function BalanceChart({}: BalanceChartProps) {
-  const chartData = genChartData(20)
+export default function BalanceChart({chartData}: BalanceChartProps) {
   const chartConfig = {
     desktop: {
       label: "Balance",
@@ -20,13 +20,14 @@ export default function BalanceChart({}: BalanceChartProps) {
   } satisfies ChartConfig
   return (
     <div className="">
-      <ChartContainer config={chartConfig}>
+      <ChartContainer className="h-full w-full" config={chartConfig}>
         <LineChart
           accessibilityLayer
           data={chartData}
           margin={{
-            left: 12,
-            right: 12,
+            top: 32,
+            bottom: 16,
+            right: 12
           }}
         >
           <CartesianGrid  />
@@ -61,6 +62,7 @@ export default function BalanceChart({}: BalanceChartProps) {
             isAnimationActive={false}
           />
         </LineChart>
+        
       </ChartContainer>
     </div>
   )
