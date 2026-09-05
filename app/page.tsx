@@ -103,7 +103,7 @@ export default function page() {
             />
             <Separator className="mb-1" />
             <TabsContent value="Dashboard">
-              <Dashboard />
+              <Dashboard events={appState.events} settings={appState.settings} />
             </TabsContent>
             <TabsContent value="Callendar">
               <Callendar
