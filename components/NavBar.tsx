@@ -1,13 +1,19 @@
 import React from "react"
-import { Tabs, TabsList, TabsTrigger } from "./ui/tabs"
+import { TabsList, TabsTrigger } from "./ui/tabs"
 import { Plus } from "lucide-react"
 import { Button } from "./ui/button"
 
-type NavBarProps = {}
+type NavBarProps = {
+  onNewEvent?: () => void
+  showNewEventButton?: boolean
+}
 
-export default function NavBar({}: NavBarProps) {
+export default function NavBar({
+  onNewEvent,
+  showNewEventButton = true,
+}: NavBarProps) {
   return (
-    <div className="flex flex-row align items-center justify-between">
+    <div className="align flex flex-row items-center justify-between">
       <TabsList>
         <TabsTrigger value="Dashboard">Dashboard</TabsTrigger>
         <TabsTrigger value="Callendar">Callendar</TabsTrigger>
@@ -15,10 +21,12 @@ export default function NavBar({}: NavBarProps) {
         <TabsTrigger value="Settings">Settings</TabsTrigger>
       </TabsList>
 
-      <Button className="">
-        <Plus data-icon="inline-start" />
-        New event
-      </Button>
+      {showNewEventButton && (
+        <Button className="" onClick={onNewEvent}>
+          <Plus data-icon="inline-start" />
+          New event
+        </Button>
+      )}
     </div>
   )
 }
