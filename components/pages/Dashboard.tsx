@@ -100,8 +100,8 @@ export default function Dashboard({ events, settings }: DashboardProps) {
 
   return (
     <>
-      <div className="grid grid-cols-[auto_1fr] grid-rows-[550_auto]">
-        <div className="py-5">
+      <div className="grid grid-cols-[auto_1fr] grid-rows-[550_auto] gap-x-6">
+        <div className="py-5 pb-15">
           <RangePicker
             tickList={fundsDescending}
             startSetter={setStartMoneyIndex}
@@ -120,7 +120,7 @@ export default function Dashboard({ events, settings }: DashboardProps) {
           showWhatIf={showWhatIf}
         />
         <div className="h-full w-full"></div>
-        <div className="pl-5">
+        <div className="pl-15">
           <RangePicker
             tickList={dates}
             startSetter={setStartTimeIndex}
