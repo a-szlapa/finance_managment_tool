@@ -23,7 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-import { BudgetEvent, EventKind } from "@/app/types"
+import { BudgetEvent, EventKind } from "@/lib/types/appData"
 import { createEmptyForm } from "./EventForm"
 import EventDateFields from "@/components/modals/EventDateFields"
 
@@ -31,46 +31,39 @@ interface NewEventModalProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   onCreate: (event: BudgetEvent) => void
+  defaultDate?: string // ISO date to pre-fill when opened from a calendar day
 }
 
 export default function NewEventModal({
   open,
   onOpenChange,
   onCreate,
+  defaultDate,
 }: NewEventModalProps) {
   const [form, setForm] = useState(createEmptyForm)
   const [error, setError] = useState<string | null>(null)
 
-  //that is some wizard shit tbh
-  //basically
-  {/*
-    typeof EMPTY_FORM grabs the type of the variable
-    wich in this case would be something like
-    {
-        name: string,
-        amount: string,
-        kind: EventKind,
-        recurrence: Recurrence,
-    ...}
-    
-    then keyof grabs the keys from thistype to get
-    name|amount|kind and so on
-    and then K extends that thingamajig creating an equivalent of
-    type K = name|amount|kind and so on */}
-
-  //in short dynamic type for update (duh)
+  // dynamic type for update: grabs the key union off the form's shape so
+  // `update` stays type-safe without spelling out every field by hand
   const update = <K extends keyof ReturnType<typeof createEmptyForm>>(
     key: K,
     value: ReturnType<typeof createEmptyForm>[K]
   ) => setForm((prev) => ({ ...prev, [key]: value }))
 
   const reset = () => {
-    setForm(createEmptyForm())
+    setForm({
+      ...createEmptyForm(),
+      date: defaultDate ?? createEmptyForm().date,
+    })
     setError(null)
   }
 
   const handleOpenChange = (next: boolean) => {
-    if (!next) reset()
+    if (next) {
+      setForm((prev) => ({ ...prev, date: defaultDate ?? prev.date }))
+    } else {
+      reset()
+    }
     onOpenChange(next)
   }
 
@@ -220,7 +213,7 @@ export default function NewEventModal({
               }
             />
             <Label htmlFor="hypothetical" className="font-normal">
-              Mark as hypothetical ("what if")
+              Mark as hypothetical (&quot;what if&quot;)
             </Label>
           </div>
 

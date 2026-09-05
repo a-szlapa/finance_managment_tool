@@ -17,8 +17,11 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 
-import { AppSettings, AppState, BudgetEvent } from "@/app/types"
-import { exportAppState, parseImportedAppState } from "@/lib/app-data"
+import { AppSettings, AppState, BudgetEvent } from "@/lib/types/appData"
+import {
+  exportAppState,
+  parseImportedAppState,
+} from "@/lib/helperFunctions/appDataIO"
 
 interface SettingsProps {
   settings: AppSettings
@@ -128,9 +131,7 @@ export default function Settings({
     reader.onload = () => {
       const parsed = parseImportedAppState(String(reader.result))
       if (!parsed) {
-        setImportError(
-          "That file doesn't look like a budget forecast export."
-        )
+        setImportError("That file doesn't look like a budget forecast export.")
         return
       }
       setImportError(null)
@@ -150,7 +151,7 @@ export default function Settings({
       <section className="space-y-4">
         <div>
           <h2 className="text-sm font-medium">Starting balance</h2>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-sm text-muted-foreground">
             The anchor point your forecast is calculated from.
           </p>
         </div>
@@ -192,7 +193,7 @@ export default function Settings({
               value={form.savings}
               onChange={(e) => update("savings", e.target.value)}
             />
-            <p className="text-muted-foreground text-xs">
+            <p className="text-xs text-muted-foreground">
               Set aside, but still technically available.
             </p>
           </div>
@@ -214,7 +215,7 @@ export default function Settings({
         <div className="flex items-center gap-3">
           <Button onClick={handleSave}>Save changes</Button>
           {saved && (
-            <span className="text-muted-foreground text-sm">Saved.</span>
+            <span className="text-sm text-muted-foreground">Saved.</span>
           )}
         </div>
       </section>
@@ -225,7 +226,7 @@ export default function Settings({
       <section className="space-y-3">
         <div>
           <h2 className="text-sm font-medium">What-if events</h2>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-sm text-muted-foreground">
             {hypotheticalCount === 0
               ? "No what-if events right now."
               : `${hypotheticalCount} event${hypotheticalCount === 1 ? "" : "s"} currently marked as what-if.`}
@@ -251,7 +252,7 @@ export default function Settings({
               </AlertDialogTitle>
               <AlertDialogDescription>
                 These events will become permanent and no longer marked as
-                what-if. This can't be undone.
+                what-if. This can&apos;t be undone.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
@@ -270,7 +271,7 @@ export default function Settings({
       <section className="space-y-3">
         <div>
           <h2 className="text-sm font-medium">Data</h2>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-sm text-muted-foreground">
             Back up your events and settings, or restore from a file.
           </p>
         </div>

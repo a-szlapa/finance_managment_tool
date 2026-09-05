@@ -12,9 +12,9 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-import { Recurrence } from "@/app/types"
+import { Recurrence } from "@/lib/types/appData"
 import { EventFormState } from "@/components/modals/EventForm"
-import { todayISO } from "@/lib/date"
+import { todayISO } from "@/lib/helperFunctions/date"
 
 interface EventDateFieldsProps {
   form: EventFormState
@@ -41,7 +41,12 @@ export default function EventDateFields({
 
       if (prev.recurrence === "once" && next !== "once") {
         const carried = prev.date || today
-        return { ...prev, recurrence: next, startDate: carried, endDate: carried }
+        return {
+          ...prev,
+          recurrence: next,
+          startDate: carried,
+          endDate: carried,
+        }
       }
 
       if (prev.recurrence !== "once" && next === "once") {

@@ -1,5 +1,5 @@
-import { AppState } from "@/app/types"
-import { todayISO } from "@/lib/date"
+import { AppState } from "@/lib/types/appData"
+import { todayISO } from "@/lib/helperFunctions/date"
 
 export function exportAppState(state: Pick<AppState, "events" | "settings">) {
   const blob = new Blob([JSON.stringify(state, null, 2)], {

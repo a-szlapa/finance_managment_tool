@@ -23,7 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-import { BudgetEvent, EventKind } from "@/app/types"
+import { BudgetEvent, EventKind } from "@/lib/types/appData"
 import { createEmptyForm } from "./EventForm"
 import EventDateFields from "@/components/modals/EventDateFields"
 
@@ -67,7 +67,6 @@ export default function EditEventModal({
     }
   }, [open, event])
 
-  //wizard shit once more
   const update = <K extends keyof ReturnType<typeof createEmptyForm>>(
     key: K,
     value: ReturnType<typeof createEmptyForm>[K]
@@ -226,7 +225,7 @@ export default function EditEventModal({
               }
             />
             <Label htmlFor="edit-hypothetical" className="font-normal">
-              Mark as hypothetical ("what if")
+              Mark as hypothetical (&quot;what if&quot;)
             </Label>
           </div>
 

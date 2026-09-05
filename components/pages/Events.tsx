@@ -33,7 +33,7 @@ import {
 } from "@/components/ui/alert-dialog"
 
 import EditEventModal from "@/components/modals/EditEvent"
-import { BudgetEvent } from "@/app/types"
+import { BudgetEvent } from "@/lib/types/appData"
 
 interface EventsProps {
   events: BudgetEvent[]
@@ -162,7 +162,7 @@ export default function Events({ events, onUpdate, onDelete }: EventsProps) {
       {/* Controls */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <div className="relative flex-1">
-          <Search className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2" />
+          <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             placeholder="Search events..."
             className="pl-9"
@@ -218,7 +218,7 @@ export default function Events({ events, onUpdate, onDelete }: EventsProps) {
 
       {/* List */}
       {visibleEvents.length === 0 ? (
-        <div className="text-muted-foreground rounded-lg border border-dashed p-10 text-center text-sm">
+        <div className="rounded-lg border border-dashed p-10 text-center text-sm text-muted-foreground">
           {events.length === 0
             ? "No events yet. Add one to get started."
             : "No events match your filters."}
@@ -234,7 +234,10 @@ export default function Events({ events, onUpdate, onDelete }: EventsProps) {
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="truncate font-medium">{event.name}</span>
 
-                  <Badge variant="outline" className="gap-1 text-xs font-normal">
+                  <Badge
+                    variant="outline"
+                    className="gap-1 text-xs font-normal"
+                  >
                     {event.recurrence === "once" ? (
                       <CalendarClock className="size-3" />
                     ) : (
@@ -254,7 +257,7 @@ export default function Events({ events, onUpdate, onDelete }: EventsProps) {
                   )}
                 </div>
 
-                <p className="text-muted-foreground mt-0.5 truncate text-sm">
+                <p className="mt-0.5 truncate text-sm text-muted-foreground">
                   {formatRecurrenceDetail(event)}
                   {event.notes ? ` · ${event.notes}` : ""}
                 </p>
@@ -282,7 +285,7 @@ export default function Events({ events, onUpdate, onDelete }: EventsProps) {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="text-muted-foreground hover:text-red-600 size-8"
+                  className="size-8 text-muted-foreground hover:text-red-600"
                   onClick={() => setDeletingEvent(event)}
                 >
                   <Trash2 className="size-4" />
@@ -308,9 +311,11 @@ export default function Events({ events, onUpdate, onDelete }: EventsProps) {
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete "{deletingEvent?.name}"?</AlertDialogTitle>
+            <AlertDialogTitle>
+              Delete &quot;{deletingEvent?.name}&quot;?
+            </AlertDialogTitle>
             <AlertDialogDescription>
-              This can't be undone. The event and its schedule will be
+              This can&apos;t be undone. The event and its schedule will be
               permanently removed.
             </AlertDialogDescription>
           </AlertDialogHeader>

@@ -1,6 +1,17 @@
-import { AppState } from "@/app/types"
+import { AppState } from "@/lib/types/appData"
+import { todayISO } from "@/lib/helperFunctions/date"
 
 const STORAGE_KEY = "budget-forecast:app-state"
+
+export const defaultAppState = (): AppState => ({
+  events: [],
+  settings: {
+    initialBalance: 0,
+    currency: "USD",
+    initialBalanceDate: todayISO(),
+    savings: 0,
+  },
+})
 
 export function loadAppState(): AppState | null {
   if (typeof window === "undefined") return null
